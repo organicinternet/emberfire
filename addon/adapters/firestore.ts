@@ -132,7 +132,7 @@ export default class FirestoreAdapter extends DS.Adapter.extend({
         if (adapter !== this) {
             return adapter.findHasMany(store, snapshot, url, relationship) as RSVP.Promise<any>;
         } else if (relationship.options.subcollection) {
-            return docReference(this, relationship.parentModelName, snapshot.id).then(doc => queryDocs(doc.collection(collectionNameForType(relationship.type)), relationship.options.query));
+            return docReference(this, relationship.parentModelName, snapshot.id).then(doc => queryDocs(doc.collection(relationship.options.subcollectionName || collectionNameForType(relationship.type)), relationship.options.query));
         } else {
             return rootCollection(this, relationship.type).then(collection => queryDocs(collection.where(relationship.parentModelName, '==', snapshot.id), relationship.options.query));
         }
